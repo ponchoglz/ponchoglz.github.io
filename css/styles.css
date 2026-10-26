@@ -47,6 +47,11 @@ a {
   text-decoration: none;
 }
 
+accent {
+  color: var(--accent);
+  text-decoration: none;
+}
+
 .container {
   width: min(var(--max-width), calc(100% - 40px));
   margin: 0 auto;
@@ -161,8 +166,6 @@ h1 {
   border-color: var(--accent);
 }
 
-/* GET INTO MY BRAIN */
-
 .brain-buttons {
   width: 100%;
   margin-top: 25px;
@@ -179,11 +182,13 @@ h1 {
 ======================================== */
 
 .profile-card {
-  background: linear-gradient(
-    145deg,
-    rgba(112, 225, 193, 0.10),
-    rgba(134, 170, 255, 0.08)
-  ), var(--panel);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(112, 225, 193, 0.10),
+      rgba(134, 170, 255, 0.08)
+    ),
+    var(--panel);
   border: 1px solid var(--line);
   border-radius: 20px;
   padding: 30px;
@@ -274,13 +279,43 @@ h2 {
 
 .section-description {
   color: var(--muted);
-  max-width: 650px;
+  text-align: justify;
   margin-top: 12px;
 }
 
 /* ========================================
    8. ABOUT & SKILLS
 ======================================== */
+
+.about-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.about-text {
+  flex: 1;
+}
+
+.image-container {
+  flex-shrink: 0;
+  margin-top: 100px;
+}
+
+.profile-image {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 2px solid rgba(112, 225, 193, 0.25);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+  transition: transform 0.3s ease;
+}
+
+.profile-image:hover {
+  transform: translateY(-3px);
+}
 
 .about-grid {
   display: grid;
@@ -364,23 +399,77 @@ h2 {
 }
 
 /* ========================================
-   10. PROJECTS
+   10. PROJECTS CAROUSEL
 ======================================== */
 
-.projects {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+#projects .projects {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  align-items: center;
+
+  /* Center first and last cards */
+  padding: 45px calc((100% - 350px) / 2);
+
+  cursor: grab;
+  overscroll-behavior-x: contain;
 }
 
-.project {
+#projects .projects:active {
+  cursor: grabbing;
+}
+
+#projects .projects::-webkit-scrollbar {
+  display: none;
+}
+
+/* Disable text selection inside carousel */
+
+#projects .projects,
+#projects .projects .project,
+#projects .projects .project * {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Equal card dimensions */
+
+#projects .project {
+  flex: 0 0 350px;
+  width: 350px;
+  height: 350px;
+  min-width: 0;
+  box-sizing: border-box;
+
   display: flex;
   flex-direction: column;
-  min-height: 230px;
   padding: 25px;
+
+  overflow: hidden;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 15px;
+  scroll-snap-align: center;
+
+  transform: scale(0.85);
+  opacity: 0.5;
+
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease,
+    border-color 0.35s ease;
+}
+
+#projects .project.active {
+  transform: scale(1.08);
+  opacity: 1;
+  border-color: var(--accent);
+  z-index: 2;
 }
 
 .project-number {
@@ -397,12 +486,29 @@ h2 {
 .project p {
   color: var(--muted);
   font-size: 0.92rem;
+  overflow: visible;
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
 }
 
 .project small {
   margin-top: auto;
   padding-top: 20px;
   color: var(--blue);
+}
+
+/* ========================================
+   10.1 GENERAL SCROLLER
+======================================== */
+
+.scroller {
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+  padding-bottom: 10px;
 }
 
 /* ========================================
@@ -457,8 +563,12 @@ footer {
     gap: 35px;
   }
 
-  .projects {
-    grid-template-columns: 1fr;
+  .about-header {
+    flex-direction: column;
+  }
+
+  .image-container {
+    margin-top: 20px;
   }
 
   .job {
@@ -475,15 +585,21 @@ footer {
     gap: 12px;
     font-size: 0.8rem;
   }
-}
-
-@media (max-width: 480px) {
-  .container {
-    width: calc(100% - 28px);
-  }
 
   .nav-links a:nth-child(2) {
     display: none;
+  }
+
+  #projects .projects {
+    padding: 35px 10%;
+    scroll-padding-inline: 10%;
+  }
+
+  #projects .project {
+    flex-basis: 80%;
+    width: 80%;
+    height: 350px;
+    padding: 21px;
   }
 
   h1 {
@@ -494,10 +610,13 @@ footer {
     padding: 58px 0;
   }
 
+  .container {
+    width: calc(100% - 28px);
+  }
+
   .profile-card,
   .panel,
   .job,
-  .project,
   .contact-box {
     padding: 21px;
   }
@@ -506,4 +625,3 @@ footer {
     flex-direction: column;
   }
 }
-
