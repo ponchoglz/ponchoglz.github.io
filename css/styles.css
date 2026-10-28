@@ -631,9 +631,9 @@ footer {
   }
 
   .image-container {
+    align-self: center;
     margin-top: 20px;
   }
-
   .job {
     grid-template-columns: 1fr;
     gap: 8px;
