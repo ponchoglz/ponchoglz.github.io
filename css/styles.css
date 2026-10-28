@@ -194,36 +194,99 @@ h1 {
   padding: 30px;
 }
 
-.graphic {
-  width: 145px;
-  height: 145px;
-  margin: 0 auto 25px;
-  border: 1px solid var(--accent);
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  position: relative;
+.graphic{
+  width:145px;
+  height:145px;
+  margin:0 auto 25px;
+  position:relative;
+  display:grid;
+  place-items:center;
 }
 
-.graphic::before {
-  content: "";
-  position: absolute;
-  inset: 17px;
-  border: 1px dashed var(--blue);
-  border-radius: 50%;
+/* círculo exterior incompleto */
+
+.graphic::after{
+  content:"";
+  position:absolute;
+  inset:0;
+
+  border-radius:50%;
+
+  border:2px dashed transparent;
+  border-top:2px solid var(--accent);
+  border-right:2px solid var(--accent);
+  border-bottom:2px solid var(--accent);
+  border-left:2px solid var(--accent);
+  opacity:.9;
 }
 
-.chip-icon {
-  width: 62px;
-  height: 62px;
-  background: #17243a;
-  border: 2px solid var(--accent);
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  color: var(--accent);
-  font-size: 1.5rem;
-  font-weight: 800;
+/* círculo interior incompleto y punteado */
+
+.graphic::before{
+  content:"";
+  position:absolute;
+  inset:17px;
+
+  border-radius:50%;
+
+  border:2px dashed transparent;
+  border-top-color:var(--blue);
+  border-right-color:var(--blue);
+  border-bottom-color:var(--blue);
+  border-left-color:var(--blue);
+  opacity:.8;
+}
+
+.chip-icon{
+  width:62px;
+  height:62px;
+
+  display:grid;
+  place-items:center;
+
+  background:#17243a;
+  border:2px solid var(--accent);
+  border-radius:12px;
+
+  color:var(--accent);
+  font-size:1.5rem;
+  font-weight:800;
+
+  position:relative;
+  z-index:2;
+
+  transition:all .3s ease;
+}
+
+/* Hover */
+
+.graphic:hover::after{
+  animation:spinOuter 4s linear infinite;
+}
+
+.graphic:hover::before{
+  animation:spinInner 2.5s linear infinite;
+}
+
+.graphic:hover .chip-icon{
+  transform:scale(1.08);
+
+  box-shadow:
+    0 0 12px #70e1c1,
+    0 0 25px rgba(112,225,193,.55),
+    0 0 45px rgba(112,225,193,.25);
+}
+
+/* Animaciones */
+
+@keyframes spinOuter{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+
+@keyframes spinInner{
+  from{transform:rotate(360deg);}
+  to{transform:rotate(0deg);}
 }
 
 .profile-card h3 {
